@@ -1,0 +1,79 @@
+sdf_penetration: {
+    "sdf_path": 'DATA_ROOT/sdf_grid.npy',
+     "bounds_min": 'DATA_ROOT/min_bound.npy',
+     "bounds_max": 'DATA_ROOT/max_bound.npy',
+ }
+
+sdf_chamfer: {
+      "num_points": 10000,
+      "path_to_mesh": "DATA_ROOT/neus_lr.obj",
+      "path_to_scale": ""
+      }
+
+textured_strands: {
+      "path_to_scale": "",
+      "path_to_mesh": "DATA_ROOT/furless.obj",
+      "path_to_uvmap": "",
+      "decoder_checkpoint_path": "",
+      "num_strands": 15_000,
+      "max_num_strands": 500_000,
+      "texture_size": 256,
+      "geometry_descriptor_size": 64,
+      "appearance_descriptor_size": 65,
+      "fix_normals": true,
+      "normalize_decoder_output": true,
+      "precomputed_tangent": "DATA_ROOT/tan_furless.npy",
+      "texture_type": "mlp",
+      "num_freqs": 10,
+      "path_to_classes": "DATA_ROOT/annotations_furless_reshaped2.json",
+      "mapping_length": {
+        'leg_front': 4,
+        'leg_rear': 4,
+        'paw_pads': 0,
+        'paws': 3,
+        'front_paws': 3,
+        'belly': 7.5,
+        'neck': 7,
+        'face': 3,
+        'ears': 4,
+        'inner_earcanal': 0.5,
+        'under_tail': 5,
+        'eyes': 0,
+        'tail': 6,
+        'nosetip': 0,
+        'body': 6
+    },
+        "mapping_gravity": {
+        'leg_front': [0, -1, 0.2],
+        'leg_rear': [0, -1, 0.2],
+        'paw_pads': [0, 0, 0],
+        'paws': [0, 0, 0],
+        'front_paws': [0, 0, 0],
+        'belly': [0, 0, 0],
+        'neck': [0, -0.2, 1],
+        'face': [0, -0.5, 1],
+        'ears': [0, 0.3, 1],
+        'inner_earcanal': [0, 0, 0],
+        'under_tail': [0, -1, -0.3],
+        'eyes': [0, 0, 0],
+        'tail': [0, -1, -0.5],
+        'nosetip': [0, 0, 0],
+        'body': [0, -0.2, -1]
+        },
+        "use_metrical_space": True,
+        "eye_dists_VQA": 11,
+        "eye_dists_geom": "DATA_ROOT/eyes.ply",
+        "metric_length": 1
+  }
+
+
+general: {
+    "lr": 0.001,
+    "starting_rendering_iter": 1,
+    "gamma": 0.5,
+    "milestones": [40000, 60000, 80000],
+  }
+
+extra_args: {
+    "num_guiding_strands": 0
+}

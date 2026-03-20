@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(__NEW_LINE_51c8841d2ab7f218__ cat:*)",
+      "Bash(/tmp/trace_imports.txt:*)",
+      "Read(//tmp/**)",
+      "Bash(ls:*)"
+    ]
+  }
+}

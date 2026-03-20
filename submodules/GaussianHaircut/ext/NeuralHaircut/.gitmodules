@@ -1,0 +1,18 @@
+[submodule "CDGNet"]
+	path = CDGNet
+	url = https://github.com/tjpulkl/CDGNet
+[submodule "MODNet"]
+	path = MODNet
+	url = https://github.com/ZHKKKe/MODNet
+[submodule "NeuS"]
+	path = NeuS
+	url = https://github.com/Totoro97/NeuS
+[submodule "k-diffusion"]
+	path = k-diffusion
+	url = https://github.com/crowsonkb/k-diffusion
+[submodule "npbgpp"]
+	path = npbgpp
+	url = https://github.com/rakhimovv/npbgpp
+[submodule "PIXIE"]
+	path = PIXIE
+	url = https://github.com/yfeng95/PIXIE
