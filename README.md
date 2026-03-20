@@ -24,7 +24,7 @@ This will clone external dependencies (`pytorch3d`, `simple-knn`, `glm`), create
 Download the preprocessed data from [Google Drive (link)](https://drive.google.com/uc?id=1rIxvQKXVaMZ6Xzx7MAmHfucnbezLSbZt) and place it into your desired location, e.g.:
 
 ```
-/path/to/data/panda_processed_GH/walk/
+/path/to/data/panda_processed_GH2/walk/
 ```
 ```
 pip install gdown
