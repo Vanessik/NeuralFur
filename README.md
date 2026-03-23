@@ -95,6 +95,12 @@ NeuralFur/
 - [x] Code for processed scenes
 - [x] [Reconstruction results](https://drive.google.com/drive/folders/1Gsqqr5wyE0ciJIbZ0EM87U_zkEVD1JgV)
 - [ ] Preprocessing pipeline for new data (deadline: April 12, 2026)
+- [ ] Detailed guide for using obtained ply inside unreal engine
+
+
+## License
+
+The code is distributed for research purposes under CC BY-NC-SA 4.0.
 
 
 ## Citation
