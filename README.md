@@ -108,11 +108,13 @@ The code is distributed for research purposes under CC BY-NC-SA 4.0.
 If you find this work useful, please consider citing:
 
 ```bibtex
-@article{sklyarova_kabadayi_2025neuralfur,
-    title   = {NeuralFur: Animal Fur Reconstruction from Multi-view Images},
-    author  = {Sklyarova, Vanessa and Kabadayi, Berna and Yiannakidis, Anastasios and Becherini, Giorgio and Black, Michael J. and Thies, Justus},
-    journal = {arXiv},
-    month   = {January},
-    year    = {2026}
+@inproceedings{NeuralFur26,
+  title = {{NeuralFur}: Animal Fur Reconstruction from Multi-view Images},
+  aword_paper = {Best Paper Runner Up},
+  booktitle = {Int.~Conf.~on 3D Vision (3DV)},
+  month = mar,
+  year = {2026},
+  author = {Sklyarova, Vanessa and Kabadayi, Berna and Yiannakidis, Anastasios and Becherini, Giorgio and Black, Michael J. and Thies, Justus},
+  month_numeric = {3}
 }
 ```
