@@ -164,7 +164,7 @@ python preprocessing/extract_eyes.py \
 
 ## 11. Losses
 
-### 11a Compute SDF volume
+### 11a. Compute SDF volume
 
 Computes a signed distance field on a regular grid from the furless body mesh. Used as a penetration loss during fur optimization.
 
@@ -177,7 +177,7 @@ python preprocessing/compute_sdf.py \
   --grid_size 32
 ```
 
-### 11b Save bald mask
+### 11b. Save bald mask to exclude regions from loss calculation
 
 ```bash
 python preprocessing/visibility_faces.py
