@@ -1,6 +1,8 @@
 # Preprocessing on Artemis Data [WIP]
 
-Steps to process raw Artemis data from scratch. All scripts referenced below are in this directory.
+Steps to process raw Artemis data from scratch. All scripts referenced below are in `preprocessing/` and should be run from that directory.
+
+Every script accepts `--animal` and `--root_path` flags. The `--root_path` is the root Artemis data directory containing per-animal subdirectories.
 
 ### Prerequisites
 
@@ -54,9 +56,8 @@ Converts the NeuS-processed data into the directory structure expected by Gaussi
 ```bash
 python preprocessing/prepare_data_in_GH_format.py \
   --animal panda \
-  --neus_root_path ./submodules/NeuS/exp \
   --root_path /path/to/Artemis \
-  --save_root_path /path/to/Artemis
+  --neus_root_path ./submodules/NeuS/exp
 ```
 
 ## 4. Calculate orientation maps
@@ -87,7 +88,7 @@ Open `annotate_smal.blend` in Blender, paint vertex groups for body parts (legs,
 
 ### 6b. Transfer annotations to target mesh
 
-Transfers vertex group annotations from the fitted SMAL model to the target mesh using nearest-neighbor matching. These annotations define per-region fur length and gravity directions.
+Transfers vertex group annotations from the fitted SMAL model to the target mesh using nearest-neighbor matching. 
 
 ```bash
 python preprocessing/transfer_smal_to_neus.py \
@@ -97,8 +98,15 @@ python preprocessing/transfer_smal_to_neus.py \
   --input_mesh_path furless_reshaped.obj
 ```
 
+### 6c. Validate and complete annotations
+
+Ensures all vertices have a body-part label (assigns remaining to "body"):
+
 ```bash
-python preprocessing/check_fur_length_and_blender_annotations.py
+python preprocessing/check_fur_length_and_blender_annotations.py \
+  --animal panda \
+  --root_path /path/to/Artemis \
+  --mode furless_reshaped
 ```
 
 ## 7. Annotate per-part fur properties with ChatGPT
@@ -119,55 +127,65 @@ See `src/animal_config.py` for reference values across different animals.
 
 ## 8. Extract furless body mesh
 
-Shrinks the NeuS mesh inward along vertex normals based on per-part fur thickness to obtain the furless (skin) body mesh. The shrinkage is defined per body part using `effective_fur_thickness_cm` values and scaled to metric space using the eye distance. The shrinkage field is Laplacian-smoothed across the surface for continuity, then the shrunken mesh is converted to SDF, reconstructed via marching cubes, and cleaned (degenerate faces removed, largest component kept).
+Shrinks the NeuS mesh inward along vertex normals based on per-part fur thickness to obtain the furless (skin) body mesh. Uses `effective_fur_thickness_cm` from `src/animal_config.py` and scales to metric space using eye distance.
 
-The key steps are:
-
-1. Load the NeuS mesh and body part annotations
-2. Build a per-vertex shrinkage field from `effective_fur_thickness_cm` per body part
-3. Laplacian-smooth the shrinkage field (100 iterations)
-4. Displace vertices inward along normals by the smoothed shrinkage
-5. Convert to SDF, run marching cubes at resolution 256, and clean the result
-6. Export as `furless_reshaped.obj`
+```bash
+python preprocessing/extract_furless_body.py \
+  --animal panda \
+  --root_path /path/to/Artemis \
+  --eye_dist_vqa 11.0 \
+  --smooth_iterations 100 \
+  --voxel_resolution 256
+```
 
 ## 9. Compute tangent field with Directional
 
-Clean the NeuS mesh to remove some artifacts obtained after marching cubes procedure during inference (eg isolated faces):
+### 9a. Clean mesh before processing
+
+Clean the mesh to remove artifacts from marching cubes (isolated faces, degenerate geometry):
 
 ```bash
-python fix_mesh_before_directional.py
+python preprocessing/fix_mesh_before_directional.py \
+  --animal panda \
+  --root_path /path/to/Artemis \
+  --input_mesh shrunken_panda_sdf_only.obj \
+  --target_faces_hr 160000 \
+  --target_faces_lr 10000
 ```
 
-Use the [Directional](https://github.com/avaxman/Directional) library to compute a tangent field on the mesh surface. Refer  [here](https://avaxman.github.io/Directional/) and [here](https://avaxman.github.io/Directional/tutorial/#102-discrete-tangent-bundles) for more details on installation and lunching. If done correctly obtained `rawFaceField.dmat` convert into normalized using:
+### 9b. Compute raw tangent field with Directional
 
+Use the [Directional](https://github.com/avaxman/Directional) library to compute a tangent field on the mesh surface. Refer [here](https://avaxman.github.io/Directional/) and [here](https://avaxman.github.io/Directional/tutorial/#102-discrete-tangent-bundles) for details. The output `rawFaceField.dmat` is then converted into a normalized field:
 
 ```bash
-python save_directional_basis.py 
+python preprocessing/save_directional_basis.py \
+  --animal panda \
+  --root_path /path/to/Artemis \
+  --input_field rawFaceField.dmat \
+  --input_mesh furless_reshaped.obj \
+  --output field_furless_reshaped.npy
 ```
 
-The output field is further refined using parallel transport:
+### 9c. Orient tangent field with parallel transport
 
 ```bash
 python preprocessing/compute_tangent_basis.py \
   --animal panda \
   --root_path /path/to/Artemis \
-  --save_root_path /path/to/Artemis \
-  --mode furless_reshaped 
+  --mode furless_reshaped
 ```
-To visualize obtained field add also `--visualize_tan`.
 
+Add `--visualize_tan` to export a PLY visualization of the tangent field.
 
 ## 10. Create eye landmarks and measure eye distance
 
 Extract eye keypoints from the Artemis dataset or from SMAL model and save as `eyes.ply`.
-
 
 ```bash
 python preprocessing/extract_eyes.py \
   --animal panda \
   --root_path /path/to/Artemis
 ```
-
 
 ## 11. Losses
 
@@ -179,13 +197,29 @@ Computes a signed distance field on a regular grid from the furless body mesh. U
 python preprocessing/compute_sdf.py \
   --animal panda \
   --root_path /path/to/Artemis \
-  --save_root_path /path/to/Artemis \
   --mode furless_reshaped \
   --grid_size 32
 ```
 
 ### 11b. Save bald mask to exclude regions from loss calculation
 
+Creates per-frame masks marking regions without fur (paw pads, eyes, nosetip):
+
 ```bash
-python preprocessing/visibility_faces.py
+python preprocessing/visibility_map.py \
+  --animal panda \
+  --root_path /path/to/Artemis \
+  --mesh_name furless_reshaped.obj \
+  --annotations_name annotations_furless_reshaped.json \
+  --exclude_groups paw_pads eyes nosetip
+```
+
+### 11c. Extract UV map (optional)
+
+```bash
+python preprocessing/save_uvmap.py \
+  --animal panda \
+  --root_path /path/to/Artemis \
+  --input furless_reshaped_uv.obj \
+  --output furless_reshaped_uv.pt
 ```

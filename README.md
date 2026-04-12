@@ -6,7 +6,7 @@ Fur reconstruction from multi-view images using 3D Gaussian Splatting.
 
 - CUDA 11.8 ([download](https://developer.nvidia.com/cuda-11-8-0-download-archive))
 - Conda
-- Blender 3.6 (optional, for strand visualization) ([download](https://www.blender.org/download/lts/3-6))
+- Blender 3.6 or Meshlab (optional, for strand visualization) ([download](https://www.blender.org/download/lts/3-6), [download](https://www.meshlab.net/))
 
 Make sure `PATH` includes `<CUDA_DIR>/bin` and `LD_LIBRARY_PATH` includes `<CUDA_DIR>/lib64`.
 

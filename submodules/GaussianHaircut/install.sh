@@ -19,7 +19,7 @@ eval "$(conda shell.bash hook)"
 # Save parent dir
 PROJECT_DIR=$PWD
 
-# Pull external libraries (NeuralHaircut is already included in ext/)
+# Pull external libraries (NeuralHaircut and diff_gaussian_rasterization_hair is already included in ext/)
 cd $PROJECT_DIR/ext && git clone https://github.com/facebookresearch/pytorch3d
 cd $PROJECT_DIR/ext/pytorch3d && git checkout 2f11ddc5ee7d6bd56f2fb6744a16776fab6536f7
 cd $PROJECT_DIR/ext && git clone https://github.com/camenduru/simple-knn
