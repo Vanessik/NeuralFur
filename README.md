@@ -1,6 +1,4 @@
-# NeuralFur
-
-Fur reconstruction from multi-view images using 3D Gaussian Splatting.
+# 🐾 NeuralFur: Animal Fur Reconstruction From Multi-View Images
 
 ## Prerequisites
 
