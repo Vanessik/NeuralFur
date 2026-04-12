@@ -1,0 +1,3 @@
+[submodule "submodules/NeuS"]
+	path = submodules/NeuS
+	url = https://github.com/Totoro97/NeuS.git
