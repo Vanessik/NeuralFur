@@ -43,6 +43,10 @@ The data directory should contain:
 - `masks/` -- segmentation masks
 - `orientations/` -- orientation maps
 
+## Preprocessing on Artemis Data [WIP]
+
+For processing raw Artemis data from scratch, see the full preprocessing guide: [preprocessing/preprocess.md](preprocessing/preprocess.md).
+
 ## Configuration
 
 Edit `submodules/GaussianHaircut/simple_run_panda.sh` and set your paths:
