@@ -96,10 +96,11 @@ NeuralFur/
 
 ## TODO
 
-- [x] Code for processed scenes
+- [x] Code for preprocessed scene
 - [x] [Reconstruction results](https://drive.google.com/drive/folders/1Gsqqr5wyE0ciJIbZ0EM87U_zkEVD1JgV)
-- [ ] Preprocessing pipeline for new data (deadline: April 12, 2026)
+- [ ] Preprocessing pipeline for Artemis dataset (deadline: April 19, 2026)
 - [ ] Detailed guide for using obtained ply inside unreal engine
+
 
 
 ## License

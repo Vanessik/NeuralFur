@@ -132,13 +132,20 @@ The key steps are:
 
 ## 9. Compute tangent field with Directional
 
-Clean the NeuS mesh to remove some artifacts:
+Clean the NeuS mesh to remove some artifacts obtained after marching cubes procedure during inference (eg isolated faces):
 
 ```bash
 python fix_mesh_before_directional.py
 ```
 
-then use the [Directional](https://github.com/avaxman/Directional) library to compute a tangent field on the mesh surface. The output field is then refined using parallel transport:
+Use the [Directional](https://github.com/avaxman/Directional) library to compute a tangent field on the mesh surface. Refer  [here](https://avaxman.github.io/Directional/) and [here](https://avaxman.github.io/Directional/tutorial/#102-discrete-tangent-bundles) for more details on installation and lunching. If done correctly obtained `rawFaceField.dmat` convert into normalized using:
+
+
+```bash
+python save_directional_basis.py 
+```
+
+The output field is further refined using parallel transport:
 
 ```bash
 python preprocessing/compute_tangent_basis.py \
